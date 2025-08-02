@@ -5,6 +5,10 @@
   "bin": {
     "usb-proxy": "./bin/usb-proxy.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ailuoku6/iphone-usb-proxy-dev-server"
+  },
   "keywords": [
     "usb",
     "iphone",
