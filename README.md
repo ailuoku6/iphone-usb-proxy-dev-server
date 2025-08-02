@@ -38,7 +38,7 @@ http://127.0.0.1:3000
 在终端中运行：
 
 ```bash
-usb-proxy --localPort=<LOCAL_TARGET_PORT> --proxyPort=<PROXY_PORT>
+usb-proxy --localPort=<LOCAL_TARGET_PORT> --proxyPort=<PROXY_PORT> [--customCandidates=<CUSTOM_CANDIDATES>]
 ```
 
 示例：
@@ -75,6 +75,7 @@ http://169.254.92.141:7082
 
 * `<LOCAL_TARGET_PORT>`：你希望代理的本地端口（比如开发服务器监听的端口）
 * `<PROXY_PORT>`：你希望监听的代理端口（供 iPhone 访问）
+* `<CUSTOM_CANDIDATES>` 自定义网络接口
 
 ---
 
@@ -82,10 +83,6 @@ http://169.254.92.141:7082
 
 * 请确保本地服务监听在 `127.0.0.1:<LOCAL_TARGET_PORT>`。
 * 若被防火墙拦截，请允许 Node.js 的入站连接。
-* 若 iPhone 无法访问，请在 Mac 上运行 `ifconfig` 或 `ipconfig getifaddr enX` 查找实际 IP。
+* 若未知IP，请在 Mac 上运行 `ifconfig` 或 `ipconfig getifaddr enX` 查找实际 iPhone USB 所在的网络接口，并写在customCandidates参数中。
+* 若 iPhone 无法访问，请检查是否关闭VPN。
 
----
-
-## 注意事项
-
-- iPhone 必须通过 USB 使用「Internet共享」连接 Mac。

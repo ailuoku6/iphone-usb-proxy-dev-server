@@ -8,6 +8,8 @@ const os = require('os');
 let LOCAL_TARGET_PORT = 3000;
 let PROXY_PORT = 4000;
 
+let customCandidates = '';
+
 // 解析命令行参数
 const args = process.argv.slice(2);
 args.forEach((arg) => {
@@ -15,13 +17,15 @@ args.forEach((arg) => {
     LOCAL_TARGET_PORT = parseInt(arg.split('=')[1], 10);
   } else if (arg.startsWith('--proxyPort=')) {
     PROXY_PORT = parseInt(arg.split('=')[1], 10);
+  } else if (arg.startsWith('--customCandidates=')) {
+    customCandidates = arg.split('=')[1];
   }
 });
 
 // 获取 USB 网络 IP（通常为 bridge 接口）
 function getUSBNetworkIP() {
   const interfaces = os.networkInterfaces();
-  const usbCandidates = ['bridge100', 'bridge0', 'en5', 'en7', 'en6'];
+  const usbCandidates = [customCandidates, 'bridge100', 'bridge0', 'en5', 'en7', 'en6'].filter(Boolean);
 
   for (const name of usbCandidates) {
     const iface = interfaces[name];
