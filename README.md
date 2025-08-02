@@ -47,7 +47,9 @@ usb-proxy --localPort=<LOCAL_TARGET_PORT> --proxyPort=<PROXY_PORT>
 usb-proxy --localPort=8082 --proxyPort=7082
 ```
 
-这表示：将 Mac 本地的 `127.0.0.1:8082` 映射到 `0.0.0.0:7082`，供其他设备访问。
+这表示：将 Mac 本地的 `127.0.0.1:8082` 映射到 `0.0.0.0:7082`，并输出Mac的USB访问ip，供iPhone设备访问。
+
+![Mac 输出结果](result.jpg)
 
 ---
 
