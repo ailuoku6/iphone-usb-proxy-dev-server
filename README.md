@@ -1,6 +1,6 @@
 # usb-proxy-dev-server
 
-通过 USB 将 iPhone 连接到 Mac 时，在 Mac 上创建一个可被 iPhone 访问的代理服务器。实现无侵入式的iphone → usb → proxyserver → mac → server的调试链路
+通过 USB 将 iPhone 连接到 Mac 时，在 Mac 上创建一个可被 iPhone 访问的代理服务器。实现无侵入式的`iphone → usb → proxyserver → mac → server的调试链路`
 
 ## 用途
 
