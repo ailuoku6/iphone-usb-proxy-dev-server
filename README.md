@@ -1,6 +1,6 @@
 # usb-proxy-dev-server
 
-通过 USB 将 iPhone 连接到 Mac 时，在 Mac 上创建一个可被 iPhone 访问的代理服务器。实现无侵入式的iphone->usb->proxyserver->mac->server的调试链路
+通过 USB 将 iPhone 连接到 Mac 时，在 Mac 上创建一个可被 iPhone 访问的代理服务器。实现无侵入式的iphone → usb → proxyserver → mac → server的调试链路
 
 ## 用途
 
@@ -18,7 +18,10 @@ npm install -g usb-proxy-dev-server
 
 1. **连接 iPhone 与 Mac**（使用 USB 数据线）。
 2. 在 Mac 上打开：
-   `系统设置 → 网络 → iPhone USB`
+   `系统设置 → 通用 → 共享 → 互联网共享 → iPhone USB`
+
+![Mac USB网络共享设置](setting.jpg)
+
 
 ### 步骤 2：启动你在 Mac 上的本地服务
 
