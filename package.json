@@ -1,6 +1,6 @@
 {
   "name": "usb-proxy-dev-server",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Proxy 127.0.0.1 to 0.0.0.0 for iPhone USB debugging",
   "bin": {
     "usb-proxy": "./bin/usb-proxy.js"
@@ -22,6 +22,7 @@
   "author": "lurkvon",
   "license": "MIT",
   "dependencies": {
-    "http-proxy": "^1.18.1"
+    "http-proxy": "^1.18.1",
+    "ws": "^8.18.3"
   }
 }
