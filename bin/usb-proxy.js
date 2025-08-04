@@ -31,18 +31,21 @@ function getUSBNetworkIP() {
   }
   usbCandidates.push(...extraCandidates);
 
+  const usbIp = [];
+
   for (const name of usbCandidates) {
     const iface = interfaces[name];
     if (!iface) continue;
 
     for (const addr of iface) {
       if (addr.family === 'IPv4' && !addr.internal) {
-        return addr.address;
+        // return addr.address;
+        usbIp.push(addr.address);
       }
     }
   }
 
-  return null;
+  return usbIp;
 }
 
 const app = require('fastify')({ logger: false })
@@ -54,8 +57,11 @@ app.register(proxy, {
 })
 app.listen({ port: PROXY_PORT, host: '0.0.0.0' })
 
-const ip = getUSBNetworkIP() || '未知 IP';
+const ips = getUSBNetworkIP();
 console.log(`🚀 Proxy 服务已启动`);
-console.log(`🧭 本地访问: http://localhost:${PROXY_PORT}`);
-console.log(`📱 iPhone USB 访问: http://${ip}:${PROXY_PORT}`);
 console.log(`🔁 正在转发到 127.0.0.1:${LOCAL_TARGET_PORT}`);
+console.log(`📱 iPhone USB 访问地址:`);
+(ips.length ? ips : ['未知 IP']).forEach((ip) => {
+  console.log(`http://${ip}:${PROXY_PORT}`);
+});
+
