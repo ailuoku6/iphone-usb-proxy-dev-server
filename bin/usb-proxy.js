@@ -27,6 +27,12 @@ args.forEach((arg) => {
 function getUSBNetworkIP() {
   const interfaces = os.networkInterfaces();
   const usbCandidates = [customCandidates, 'bridge100', 'bridge0', 'en5', 'en7', 'en6', 'en11', 'en19'].filter(Boolean);
+  const extraCandidates = [];
+  // 获取所有 enX 接口，从 en8 到 en30
+  for (let i = 8; i <= 30; i++) {
+    extraCandidates.push(`en${i}`);
+  }
+  usbCandidates.push(...extraCandidates);
 
   for (const name of usbCandidates) {
     const iface = interfaces[name];
@@ -44,6 +50,10 @@ function getUSBNetworkIP() {
 
 // 创建代理服务器
 const proxy = httpProxy.createProxyServer({});
+
+proxy.on('error', function(e) {
+  console.error('代理请求发生 错误:', e);
+});
 
 // 创建 HTTP 服务器
 const server = http.createServer((req, res) => {
