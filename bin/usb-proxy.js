@@ -26,7 +26,7 @@ args.forEach((arg) => {
 // 获取 USB 网络 IP（通常为 bridge 接口）
 function getUSBNetworkIP() {
   const interfaces = os.networkInterfaces();
-  const usbCandidates = [customCandidates, 'bridge100', 'bridge0', 'en5', 'en7', 'en6', 'en11'].filter(Boolean);
+  const usbCandidates = [customCandidates, 'bridge100', 'bridge0', 'en5', 'en7', 'en6', 'en11', 'en19'].filter(Boolean);
 
   for (const name of usbCandidates) {
     const iface = interfaces[name];
