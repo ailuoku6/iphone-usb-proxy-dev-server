@@ -1,9 +1,6 @@
 #!/usr/bin/env node
 
-const http = require('http');
-const httpProxy = require('http-proxy');
 const os = require('os');
-const WebSocket = require('ws');
 
 // 默认端口
 let LOCAL_TARGET_PORT = 3000;
@@ -48,69 +45,17 @@ function getUSBNetworkIP() {
   return null;
 }
 
-// 创建代理服务器
-const proxy = httpProxy.createProxyServer({});
+const app = require('fastify')({ logger: false })
+const proxy = require('@fastify/http-proxy')
+app.register(proxy, {
+  upstream: `http://localhost:${LOCAL_TARGET_PORT}`,
+  prefix: '/',
+  websocket: true
+})
+app.listen({ port: PROXY_PORT, host: '0.0.0.0' })
 
-proxy.on('error', function(e) {
-  console.error('代理请求发生 错误:', e);
-});
-
-// 创建 HTTP 服务器
-const server = http.createServer((req, res) => {
-  // 代理 HTTP 请求
-  proxy.web(req, res, { target: `http://localhost:${LOCAL_TARGET_PORT}` });
-});
-
-// 创建 WebSocket 服务器
-const wss = new WebSocket.Server({ noServer: true });
-
-// 处理 WebSocket 连接
-wss.on('connection', (ws, req) => {
-  // 获取 WebSocket 请求的完整 URL
-  const url = new URL(req.url, `http://${req.headers.host}`);
-  const path = url.pathname; // WebSocket 的路径
-  const queryParams = url.search; // WebSocket 的查询参数
-  
-  // 构建目标 WebSocket 地址
-  const wsProxyUrl = `ws://localhost:${LOCAL_TARGET_PORT}${path}${queryParams}`;
-  
-  const wsProxy = new WebSocket(wsProxyUrl);
-
-  wsProxy.on('open', () => {
-    console.log('WebSocket 连接成功');
-  });
-
-  wsProxy.on('error', (err) => {
-    console.error('WebSocket 代理连接失败:', err.message);
-    ws.close();
-  });
-
-  ws.on('message', (message) => {
-    wsProxy.send(message);
-  });
-
-  wsProxy.on('message', (message) => {
-    ws.send(message);
-  });
-
-  ws.on('close', () => wsProxy.close());
-  wsProxy.on('close', () => ws.close());
-});
-
-// 将 WebSocket 升级到 WebSocket 服务器
-server.on('upgrade', (request, socket, head) => {
-  if (request.headers.upgrade === 'websocket') {
-    wss.handleUpgrade(request, socket, head, (ws) => {
-      wss.emit('connection', ws, request);
-    });
-  }
-});
-
-// 启动监听
-server.listen(PROXY_PORT, '0.0.0.0', () => {
-  const ip = getUSBNetworkIP() || '未知 IP';
-  console.log(`🚀 Proxy 服务已启动`);
-  console.log(`🧭 本地访问: http://localhost:${PROXY_PORT}`);
-  console.log(`📱 iPhone USB 访问: http://${ip}:${PROXY_PORT}`);
-  console.log(`🔁 正在转发到 127.0.0.1:${LOCAL_TARGET_PORT}`);
-});
+const ip = getUSBNetworkIP() || '未知 IP';
+console.log(`🚀 Proxy 服务已启动`);
+console.log(`🧭 本地访问: http://localhost:${PROXY_PORT}`);
+console.log(`📱 iPhone USB 访问: http://${ip}:${PROXY_PORT}`);
+console.log(`🔁 正在转发到 127.0.0.1:${LOCAL_TARGET_PORT}`);
