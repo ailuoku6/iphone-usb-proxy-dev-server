@@ -7,6 +7,7 @@ let LOCAL_TARGET_PORT = 3000;
 let PROXY_PORT = 4000;
 
 let customCandidates = '';
+let enableLog = false;
 
 // 解析命令行参数
 const args = process.argv.slice(2);
@@ -17,6 +18,8 @@ args.forEach((arg) => {
     PROXY_PORT = parseInt(arg.split('=')[1], 10);
   } else if (arg.startsWith('--customCandidates=')) {
     customCandidates = arg.split('=')[1];
+  } else if (arg.startsWith('--log=')) {
+    enableLog = arg.split('=')[1] === '1';
   }
 });
 
@@ -48,7 +51,7 @@ function getUSBNetworkIP() {
   return usbIp;
 }
 
-const app = require('fastify')({ logger: false })
+const app = require('fastify')({ logger: enableLog })
 const proxy = require('@fastify/http-proxy')
 app.register(proxy, {
   upstream: `http://localhost:${LOCAL_TARGET_PORT}`,
